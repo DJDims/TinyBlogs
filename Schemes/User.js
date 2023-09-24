@@ -6,32 +6,38 @@ const User = new Schema(
         username: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true
         },
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true
         },
-        bio: {
+        password: {
             type: String,
             required: true
         },
+        bio: {
+            type: String,
+            required: false,
+            trim: true
+        },
         image: {
-            type: String
+            type: String,
+            required: false,
+            trim: true
         },
         followers: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
         }],
-        token: {
+        acesstoken: {
             type: String,
-            required: true
         },
-        password: {
+        refreshtoken: {
             type: String,
-            default: Date.now,
-            required: true
         },
         subscribe: {
             type: Schema.Types.ObjectId,
@@ -55,4 +61,4 @@ const User = new Schema(
     { timestamps: true, versionKey: false }
 );
 
-module.exports = mongoose.model('User', User);
+export default mongoose.model('User', User);

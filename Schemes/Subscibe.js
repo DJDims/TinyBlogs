@@ -5,7 +5,8 @@ const Subscribe = new Subscribe(
     {
         name: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
         articlesCount: {
             type: Number,

@@ -5,7 +5,8 @@ const Comment = new Schema(
     {
         body: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
         date: {
             type: Date,

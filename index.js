@@ -1,22 +1,29 @@
 import express from "express";
 import mongoose from "mongoose";
 import cron from "node-cron";
+import dotenv from "dotenv";
 
-import connectDB from "./dbConnet.js";
+import connectDB from "./dbConnect.js";
 
 import Article from "./Schemes/Article.js";
 
 import articleRouter from "./Routes/ArticleRoutes.js";
+import userRouter from "./Routes/UserRoutes.js";
+import profileRouter from "./Routes/ProfileRoutes.js";
 
-// const bodyParser = require("body-parser");
 const app = express();
+
+dotenv.config();
 
 connectDB();
 
-cron.schedule('0 0 * * * *', () => {console.log('running')});
+// cron.schedule('0 0 * * * *', () => {console.log('running')});
 
 app.use(express.json());
-app.use('/article', articleRouter);
+// app.use('/', async (req, res) => { res.send("It works!")});
+app.use('/api/', userRouter);
+app.use('/api/articles', articleRouter);
+app.use('/api/profiles', profileRouter);
 
 app.use('/test', async (req, res) => {res.send(await Article.find().exec())})
 
