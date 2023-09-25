@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import jsonwebtoken from "jsonwebtoken";
+
 const { Schema } = mongoose;
 
 const User = new Schema(
@@ -29,7 +31,7 @@ const User = new Schema(
             required: false,
             trim: true
         },
-        followers: [{
+        following: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
         }],
@@ -60,5 +62,36 @@ const User = new Schema(
     },
     { timestamps: true, versionKey: false }
 );
+
+User.statics.getUserByToken = function (token) {
+    const tokenData = jsonwebtoken.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const user = this.findOne({_id: tokenData.userId});
+    return user;
+}
+
+User.statics.getUserByUsername = function (username) {
+    const user = this.findOne({username: username}).exec();
+    return user;
+}
+
+User.statics.getUserByEmail = function (email) {
+    const user = this.findOne({email: email}).exec();
+    return user;
+}
+
+User.methods.follow = function (userId) {
+    this.following.push(userId);
+    this.save();
+}
+
+User.methods.unfollow = function (userId) {
+    this.following.splice(this.following.indexOf(userId), 1);
+    this.save();
+}
+
+User.methods.isFollowing = function (userId) {
+    if (this.following.includes(userId)) return true;
+    else return false;
+}
 
 export default mongoose.model('User', User);

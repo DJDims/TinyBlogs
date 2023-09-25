@@ -21,4 +21,4 @@ const Subscribe = new Subscribe(
     { timestamps: true, versionKey: false }
 );
 
-module.exports = mongoose.model('Subscribe', Subscribe);
+export default mongoose.model('Subscribe', Subscribe);

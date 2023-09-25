@@ -8,11 +8,6 @@ const Comment = new Schema(
             required: true,
             trim: true
         },
-        date: {
-            type: Date,
-            default: Date.now,
-            required: true
-        },
         author: {
             type: Schema.Types.ObjectId,
             ref: 'User',
@@ -27,4 +22,8 @@ const Comment = new Schema(
     { timestamps: true, versionKey: false }
 );
 
-module.exports = mongoose.model('Comment', Comment);
+Comment.statics.getCommentById = function (id) {
+    return this.findById(id);
+}
+
+export default mongoose.model('Comment', Comment);
