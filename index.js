@@ -11,6 +11,8 @@ import articleRouter from "./Routes/ArticleRoutes.js";
 import userRouter from "./Routes/UserRoutes.js";
 import profileRouter from "./Routes/ProfileRoutes.js";
 
+import { verifyToken } from "./Middleware/VerifyToken.js";
+
 const app = express();
 
 dotenv.config();
@@ -26,6 +28,6 @@ app.use('/api/articles', articleRouter);
 app.use('/api/profiles', profileRouter);
 app.use('/api/tags', async (req, res) => {res.send(await Article.getAllTags())});
 
-app.use('/test', async (req, res) => {res.send(await Article.find().exec())})
+app.use('/test', verifyToken, async (req, res) => {console.log(req.user)})
 
 app.listen(5000, () => console.log("Server is running on port 5000"));

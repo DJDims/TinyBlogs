@@ -37,6 +37,10 @@ const User = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User'
         }],
+        favorites: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Article'
+        }],
         acesstoken: {
             type: String,
         },
@@ -100,6 +104,20 @@ User.methods.unfollow = function (userId) {
 User.methods.isFollowing = function (userId) {
     if (this.following.includes(userId)) return true;
     else return false;
+}
+
+User.methods.favorite = function (articleId) {
+    this.favorites.push(articleId);
+    this.save();
+}
+
+User.methods.unfavorite = function (articleId) {
+    this.favorites.splice(this.favorites.indexOf(articleId), 1);
+    this.save();
+}
+
+User.methods.isFavorite = function (articleId) {
+    if (this.favorites.includes(articleId)) return true;
 }
 
 export default mongoose.model('User', User);

@@ -14,14 +14,14 @@ profileRouter.get('/:username',
 //Follow user
 profileRouter.post('/:username/follow',
     verifyToken,
-    checkUserExistsByUsername,
+    // checkUserExistsByUsername,
     followUser
 );
 
 //Unfollow user
 profileRouter.delete('/:username/follow',
     verifyToken,
-    checkUserExistsByUsername,
+    // checkUserExistsByUsername,
     unfollowUser
 );    
 

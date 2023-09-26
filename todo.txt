@@ -1,7 +1,7 @@
 +Authentication:
 +Registration:
 +Get Current User
-Update User
++Update User
 +Get Profile
 +Follow user
 +Unfollow user
@@ -19,3 +19,6 @@ Unfavorite Article
 +Get Tags
 
 https://realworld-docs.netlify.app/docs/specs/backend-specs/endpoints/
+
+Set Like
+Unset like

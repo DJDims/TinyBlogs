@@ -15,19 +15,18 @@ export const findAll = async (req, res) => {
 }
 
 export const findByFollowedUsers = async (req, res) => {
-    try {
-        const user = await User.getUserByToken(req.headers["x-access-token"]);
-        if (user.following.length === 0) return res.status(404).json({error: "You are not following anyone"});
-        const articles = await Article.find({author: {$in: user.following}}).exec();
-        res.json(articles);
-    } catch (error) {
-        res.json({error: error});
-    }
+    // try {
+    //     if (req.user.following.length === 0) return res.status(404).json({error: "You are not following anyone"});
+    //     const articles = await Article.find({author: {$in: user.following}}).exec();
+    //     res.json(articles);
+    // } catch (error) {
+    //     res.json({error: error});
+    // }
 }
 
 export const findBySlug = async (req, res) => {
     try {
-        const articles = await Article.find({slug: req.params.slug});
+        const articles = req.article;
         res.status(200).json(articles);
     } catch (error) {
         res.json({error: error});
@@ -40,8 +39,7 @@ export const createArticle = async (req, res) => {
         if (await Article.findByTitle(req.body.article.title)) return res.status(403).json({error: "Article with this title already exists"});
 
         article.slug = slugify(article.title, {lower: true});
-        const user = await User.getUserByToken(req.headers["x-access-token"]);
-        article.author = user._id;
+        article.author = req.user._id;
         article.tagList.forEach((element, index, array) => {
             array[index] = element.toLowerCase();
         });
@@ -54,15 +52,13 @@ export const createArticle = async (req, res) => {
 
 export const updateArticle = async (req, res) => {
     try {
-        const article = await Article.findBySlug(req.params.slug);
-        const user = await User.getUserByToken(req.headers["x-access-token"]);
-        if (article.author.toString() !== user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
+        if (req.article.author.toString() !== req.user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
         
         const searchArticle = await Article.findByTitle(req.body.article.title);
-        if (searchArticle && searchArticle._id.toString() !== article._id.toString()) return res.status(403).json({error: "Article with this title already exists"});
+        if (searchArticle && searchArticle._id.toString() !== req.article._id.toString()) return res.status(403).json({error: "Article with this title already exists"});
         
-        article.update(req.body.article);
-        await article.save();
+        req.article.update(req.body.article);
+        await req.article.save();
         res.status(200).send("Article successfully updated");
     } catch (error) {
         res.json({error: error});
@@ -73,10 +69,35 @@ export const deleteArticle = async (req, res) => {
     try {
         const article = await Article.findBySlug(req.params.slug);
         const user = await User.getUserByToken(req.headers["x-access-token"]);
-        if (article.author.toString() !== user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
+        if (article.author.toString() !== user._id.toString()) return res.status(403).send("You are not the author of this article");
 
         await Article.deleteOne(article);
         res.status(200).send("Article successfully deleted");
+    } catch (error) {
+        res.json({error: error});
+    }
+}
+
+export const favoriteArticle = async (req, res) => {
+    try {
+        const article = await Article.findBySlug(req.params.slug);
+        const user = await User.getUserByToken(req.headers['x-access-token']);
+        console.log(user)
+        if (user.isFavorite(article._id)) return res.status(403).send("You already have this article in favorites");
+        await user.favorite(article._id);
+        res.status(200).send("Article successfully added to favorites");
+    } catch (error) {
+        res.json({error: error});
+    }
+}
+
+export const unfavoriteArticle = async (req, res) => {
+    try {
+        const article = await Article.findBySlug(req.params.slug);
+        const user = await User.getUserByToken(req.headers['x-access-token']);
+        if (!user.isFavorite(article._id)) return res.status(403).send("You dont have this article in favorites");
+        await user.unfavorite(article._id);
+        res.status(200).send("Article successfully removed from favorites");
     } catch (error) {
         res.json({error: error});
     }

@@ -42,7 +42,7 @@ export const login = async (req, res) => {
 
 export const getCurrentUser = async (req, res) => {
     try {
-		const user = await User.getUserByToken(req.headers["x-access-token"]);
+		const user = req.user;
 		res.status(200).json({ user }); 
 	} catch (error) {
 		res.status(422).json({ error: error });
@@ -51,18 +51,16 @@ export const getCurrentUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
 	try {
-        const user = await User.getUserByToken(req.headers["x-access-token"]);
-		await user.update(req.body.user);
+		await req.user.update(req.body.user);
         res.status(200).send("User successfully updated"); 
     } catch (error) {
-		console.log(error);
         res.status(422).send(error);
     }
 }
 
 export const getProfile = async (req, res) => {
 	try {
-        const user = await User.getUserByUsername(req.params.username);
+        const user = req.user;
         res.status(200).json({ user }); 
     } catch (error) {
         res.status(422).json({ error: error });
@@ -71,13 +69,11 @@ export const getProfile = async (req, res) => {
 
 export const followUser = async (req, res) => {
 	try {
-		const username = req.params.username;
-		const thisUser = await User.getUserByToken(req.headers["x-access-token"]);
-		if (thisUser.username === username) return res.status(403).send('You cannot follow yourself');
+		const user = await User.getUserByUsername(req.params.username);
+		if (req.user.userId === user._id) return res.status(403).send('You cannot follow yourself');
 
-		const user = await User.getUserByUsername(username);
-		if (thisUser.isFollowing(user._id)) return res.status(403).send('You already following this user');
-		await thisUser.follow(user._id);
+		if (req.user.isFollowing(user._id)) return res.status(403).send('You already following this user');
+		await req.user.follow(user._id);
 
 		res.status(200).send('Successfully followed!');
 	} catch (error) {
@@ -87,13 +83,11 @@ export const followUser = async (req, res) => {
 
 export const unfollowUser = async (req, res) => {
 	try {
-		const username = req.params.username;
-		const thisUser = await User.getUserByToken(req.headers["x-access-token"]);
-		if (thisUser.username === username) return res.status(403).send('You cannot unfollow yourself');
+		const user = await User.getUserByUsername(req.params.username);
+		if (req.user.userId === user._id) return res.status(403).send('You cannot unfollow yourself');
 
-		const user = await User.getUserByUsername(username);
-		if (!thisUser.isFollowing(user._id)) return res.status(403).send('You are not following this user');
-		await thisUser.unfollow(user._id);
+		if (!req.user.isFollowing(user._id)) return res.status(403).send('You are not following this user');
+		await req.user.unfollow(user._id);
 
 		res.status(200).send('Successfully unfollowed!');
 	} catch (error) {
