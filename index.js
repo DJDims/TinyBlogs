@@ -24,6 +24,7 @@ app.use(express.json());
 app.use('/api/', userRouter);
 app.use('/api/articles', articleRouter);
 app.use('/api/profiles', profileRouter);
+app.use('/api/tags', async (req, res) => {res.send(await Article.getAllTags())});
 
 app.use('/test', async (req, res) => {res.send(await Article.find().exec())})
 

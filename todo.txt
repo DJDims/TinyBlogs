@@ -5,9 +5,9 @@ Update User
 +Get Profile
 +Follow user
 +Unfollow user
-List Articles
++List Articles
 Feed Articles
-Get Article
++Get Article
 +Create Article
 +Update Article
 +Delete Article
@@ -16,6 +16,6 @@ Get Article
 +Delete Comment
 Favorite Article
 Unfavorite Article
-Get Tags
++Get Tags
 
 https://realworld-docs.netlify.app/docs/specs/backend-specs/endpoints/

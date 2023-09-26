@@ -61,7 +61,6 @@ export const updateUser = async (req, res) => {
 export const getProfile = async (req, res) => {
 	try {
         const user = await User.getUserByUsername(req.params.username);
-		if (!user) return res.status(404).send({ error: 'User not found' });
         res.status(200).send({ user }); 
     } catch (error) {
         res.status(422).json({ error: error });
@@ -75,7 +74,6 @@ export const followUser = async (req, res) => {
 		if (thisUser.username === username) return res.status(403).send({ error: 'You cannot follow yourself' });
 
 		const user = await User.getUserByUsername(username);
-		if (!user) return res.status(404).send({ error: 'User not found' });
 		if (thisUser.isFollowing(user._id)) return res.status(403).send({ error: 'You already followed this user' });
 		await thisUser.follow(user._id);
 
@@ -92,7 +90,6 @@ export const unfollowUser = async (req, res) => {
 		if (thisUser.username === username) return res.status(403).send({ error: 'You cannot unfollow yourself' });
 
 		const user = await User.getUserByUsername(username);
-		if (!user) return res.status(404).send({ error: 'User not found' });
 		if (!thisUser.isFollowing(user._id)) return res.status(403).send({ error: 'You are not following this user' });
 		await thisUser.unfollow(user._id);
 

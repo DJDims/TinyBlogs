@@ -25,23 +25,13 @@ export const findByFollowedUsers = async (req, res) => {
     }
 }
 
-export const findById = async (req, res) => {
+export const findBySlug = async (req, res) => {
     try {
-        const articles = await Article.find({"_id": req.params.id});
+        const articles = await Article.find({slug: req.params.slug});
         res.status(200).json(articles);
     } catch (error) {
         res.json({error: error});
     }
-}
-
-export const findBySlug = async (req, res) => {
-    // try {
-    //     const articles = await Article.find({"_id": req.params.id});
-    //     res.status(200).json(articles);
-    // } catch (error) {
-    //     res.json({error: error});
-    // }
-    res.send("Not implemented yet")
 }
 
 export const createArticle = async (req, res) => {
@@ -64,9 +54,6 @@ export const createArticle = async (req, res) => {
 
 export const updateArticle = async (req, res) => {
     try {
-        const article = await Article.findBySlug(req.params.slug);
-        if (!article) return res.status(404).json({error: "Article not found"});
-        
         const user = await User.getUserByToken(req.headers["x-access-token"]);
         if (article.author.toString() !== user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
         
@@ -83,9 +70,6 @@ export const updateArticle = async (req, res) => {
 
 export const deleteArticle = async (req, res) => {
     try {
-        const article = await Article.findBySlug(req.params.slug);
-        if (!article) return res.status(404).json({error: "Article not found"});
-
         const user = await User.getUserByToken(req.headers["x-access-token"]);
         if (article.author.toString() !== user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
 

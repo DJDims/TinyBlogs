@@ -47,7 +47,7 @@ const Article = new Schema(
 );
 
 Article.statics.getAll = function() {
-    return this.find();
+    return this.find().select('-body -comments -likes -favoriteList -favoriteCount').sort({createdAt: 'desc'});
 }
 
 Article.statics.findByTitle = function(title) {
@@ -58,10 +58,9 @@ Article.statics.findBySlug = function(slug) {
     return this.findOne({slug: slug});
 }
 
-Article.methods.addTag = function(tagName) {
-    this.tagList.push(tagName);
-    this.save();
-};
+Article.statics.getAllTags = function() {
+    return this.distinct('tagList');
+}
 
 Article.methods.setNewData = function(newData) {
     this.title = newData.title;
