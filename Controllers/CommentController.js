@@ -5,8 +5,6 @@ import Article from '../Schemes/Article.js';
 export const getCommentsBySlug = async (req, res) => {
     try {
         const article = await Article.findBySlug(req.params.slug);
-        if (!article) return res.status(404).json({error: "Article not found"});
-
         const comments = await Comment.find({article: article._id});
         res.status(200).json(comments);
 
@@ -17,9 +15,6 @@ export const getCommentsBySlug = async (req, res) => {
 
 export const createComment = async (req, res) => {
     try {
-        const article = await Article.findBySlug(req.params.slug);
-        if (!article) return res.status(404).json({error: "Article not found"});
-
         const user = await User.getUserByToken(req.headers["x-access-token"]);
         const comment = new Comment(req.body.comment);
         comment.article = article._id;
@@ -35,17 +30,14 @@ export const createComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
     try {
-        const article = await Article.findBySlug(req.params.slug);
-        if (!article) return res.status(404).json({error: "Article not found"});
-
         const comment = await Comment.findById(req.params.id);
-        if (!comment) return res.status(404).json({error: "Comment not found"});
+        if (!comment) return res.status(404).send("Comment not found");
         
         const user = await User.getUserByToken(req.headers["x-access-token"]);
-        if (user._id.toString() !== comment.author.toString()) return res.status(403).json({error: "You are not allowed to delete this comment"});
+        if (user._id.toString() !== comment.author.toString()) return res.status(403).send("You are not allowed to delete this comment");
 
         await Comment.deleteOne(comment);
-        res.status(200).json("Successfully deleted comment");
+        res.status(200).send("Successfully deleted comment");
 
     } catch (error) {
         res.json({error: error});

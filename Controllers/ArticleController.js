@@ -54,15 +54,16 @@ export const createArticle = async (req, res) => {
 
 export const updateArticle = async (req, res) => {
     try {
+        const article = await Article.findBySlug(req.params.slug);
         const user = await User.getUserByToken(req.headers["x-access-token"]);
         if (article.author.toString() !== user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
         
         const searchArticle = await Article.findByTitle(req.body.article.title);
         if (searchArticle && searchArticle._id.toString() !== article._id.toString()) return res.status(403).json({error: "Article with this title already exists"});
         
-        article.setNewData(req.body.article);
+        article.update(req.body.article);
         await article.save();
-        res.status(200).json("Article successfully updated");
+        res.status(200).send("Article successfully updated");
     } catch (error) {
         res.json({error: error});
     }
@@ -70,11 +71,12 @@ export const updateArticle = async (req, res) => {
 
 export const deleteArticle = async (req, res) => {
     try {
+        const article = await Article.findBySlug(req.params.slug);
         const user = await User.getUserByToken(req.headers["x-access-token"]);
         if (article.author.toString() !== user._id.toString()) return res.status(403).json({error: "You are not the author of this article"});
 
         await Article.deleteOne(article);
-        res.status(200).json({message: "Article successfully deleted"});
+        res.status(200).send("Article successfully deleted");
     } catch (error) {
         res.json({error: error});
     }

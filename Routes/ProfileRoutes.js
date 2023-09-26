@@ -5,10 +5,24 @@ import { getProfile, followUser, unfollowUser } from '../Controllers/UserControl
 
 const profileRouter = Router();
 
-profileRouter.get('/:username', checkUserExistsByUsername, getProfile);    //Get Profile
+//Get Profile
+profileRouter.get('/:username',
+    checkUserExistsByUsername,
+    getProfile
+);
 
-profileRouter.post('/:username/follow', verifyToken, checkUserExistsByUsername, followUser);      //Follow user
+//Follow user
+profileRouter.post('/:username/follow',
+    verifyToken,
+    checkUserExistsByUsername,
+    followUser
+);
 
-profileRouter.delete('/:username/follow', verifyToken, checkUserExistsByUsername, unfollowUser);    //Unfollow user
+//Unfollow user
+profileRouter.delete('/:username/follow',
+    verifyToken,
+    checkUserExistsByUsername,
+    unfollowUser
+);    
 
 export default profileRouter;

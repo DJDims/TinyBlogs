@@ -6,14 +6,58 @@ import { createComment, getCommentsBySlug, deleteComment } from '../Controllers/
 
 const articleRouter = Router();
 
-articleRouter.get('/', findAll);                                                        //list articles
-articleRouter.get('/feed', verifyToken, findByFollowedUsers);                           //feed articles
-articleRouter.get('/:slug', checkArticleExists, findBySlug);                          //get article by slug
-articleRouter.post('/', verifyToken, createArticle);                                    //create article
-articleRouter.put('/:slug', verifyToken, checkArticleExists, updateArticle);            //update article
-articleRouter.delete('/:slug', verifyToken, checkArticleExists, deleteArticle);         //delete article
-articleRouter.post('/:slug/comments', verifyToken, checkArticleExists, createComment);  //add comment
-articleRouter.get('/:slug/comments', checkArticleExists, getCommentsBySlug);            //get all comments
-articleRouter.delete('/:slug/comments/:id', checkArticleExists, deleteComment);         //delete comment
+//list articles
+articleRouter.get('/', findAll);
+
+//feed articles
+articleRouter.get('/feed',
+    verifyToken,
+    findByFollowedUsers
+);
+
+//get article by slug
+articleRouter.get('/:slug',
+    checkArticleExists,
+    findBySlug
+);
+
+//create article
+articleRouter.post('/',
+    verifyToken,
+    createArticle
+);
+
+//update article
+articleRouter.put('/:slug',
+    verifyToken,
+    checkArticleExists,
+    updateArticle
+);
+
+//delete article
+articleRouter.delete('/:slug',
+    verifyToken,
+    checkArticleExists,
+    deleteArticle
+);
+
+//add comment
+articleRouter.post('/:slug/comments',
+    verifyToken,
+    checkArticleExists,
+    createComment
+);
+
+//get all comments
+articleRouter.get('/:slug/comments',
+    checkArticleExists,
+    getCommentsBySlug
+);
+
+//delete comment
+articleRouter.delete('/:slug/comments/:id',
+    checkArticleExists,
+    deleteComment
+);
 
 export default articleRouter;

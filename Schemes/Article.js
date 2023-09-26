@@ -62,13 +62,16 @@ Article.statics.getAllTags = function() {
     return this.distinct('tagList');
 }
 
-Article.methods.setNewData = function(newData) {
-    this.title = newData.title;
-    this.description = newData.description;
-    this.body = newData.body;
-    this.slug = slugify(this.title, {lower: true});
-    if (newData.tagList) {
-        newData.tagList.forEach((element, index, array) => {
+Article.methods.update = function(data) {
+    if (data.title) {
+        this.title = data.title;
+        this.slug = slugify(this.title, {lower: true});
+    }
+    if (data.description) this.description = data.description;
+    if (data.body) this.body = data.body;
+    if (data.tagList) {
+        this.tagList = [];
+        data.tagList.forEach((element, index, array) => {
             this.tagList[index] = element.toLowerCase();
         });
     }

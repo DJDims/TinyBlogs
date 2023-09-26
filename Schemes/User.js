@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import jsonwebtoken from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const { Schema } = mongoose;
 
@@ -29,16 +30,14 @@ const User = new Schema(
         image: {
             type: String,
             required: false,
-            trim: true
+            trim: true,
+            default: "https://shorturl.at/zKV47"
         },
         following: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
         }],
         acesstoken: {
-            type: String,
-        },
-        refreshtoken: {
             type: String,
         },
         subscribe: {
@@ -77,6 +76,15 @@ User.statics.getUserByUsername = function (username) {
 User.statics.getUserByEmail = function (email) {
     const user = this.findOne({email: email}).exec();
     return user;
+}
+
+User.methods.update = function (data) {
+    if (data.email) this.email = data.email;
+    if (data.username) this.username = data.username;
+    if (data.bio) this.bio = data.bio;
+    if (data.image) this.image = data.image;
+    if (data.password) this.password = bcrypt.hash(data.password, 8);
+    this.save();
 }
 
 User.methods.follow = function (userId) {
