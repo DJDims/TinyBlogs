@@ -1,6 +1,9 @@
 import jsonwebtoken from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { differenceInMonths } from "date-fns";
 import User from "../Schemes/User.js";
+import Subscribe from "../Schemes/Subscribe.js";
+import SubscribeUser from "../Schemes/SubscribeUser.js";
 
 export const register = async (req, res) => {
     const { username, email, password } = req.body.user;
@@ -28,6 +31,15 @@ export const login = async (req, res) => {
 		const userId = user.id;
 		const username = user.username;
 		const email = user.email;
+
+		const subscribe = await SubscribeUser.findByUserId(userId);t
+		const difference = differenceInMonths(user.lastLogin, new Date());
+		if (subscribe.monthsLeft >= difference) {
+			subscribe.monthsLeft = subscribe.monthsLeft - difference;
+		} else {
+			const freeSubscribe = await Subscribe.findByName('Free');
+			subscribe.setSubscribe(freeSubscribe);
+        }
 
 		const accessToken = jsonwebtoken.sign({ userId, username, email },
 			process.env.ACCESS_TOKEN_SECRET, {

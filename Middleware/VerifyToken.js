@@ -7,7 +7,9 @@ export const verifyToken = (req, res, next) => {
 
     jsonwebtoken.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
         if (err) return res.status(403).json({ message: "Forbidden" });
-        req.user = await User.getUserByToken(token);
+        const user = await User.getUserByToken(token);
+        user.updateLastLogin();
+        req.user = user;
         next();
     });
 }

@@ -4,6 +4,7 @@ import slugify from'slugify';
 import Article from '../Schemes/Article.js';
 import User from '../Schemes/User.js';
 import Comment from '../Schemes/Comment.js';
+import SubscribeUser from '../Schemes/SubscribeUser.js';
 
 export const findAll = async (req, res) => {
     try {
@@ -28,6 +29,9 @@ export const findByFollowedUsers = async (req, res) => {
 export const findBySlug = async (req, res) => {
     try {
         const articles = req.article;
+        const subscribeUser = await SubscribeUser.findByUserId(req.user._id);
+        subscribeUser.articlesLeft = subscribeUser.articlesLeft - 1;
+        subscribeUser.save();
         res.status(200).json(articles);
     } catch (error) {
         res.json({error: error});

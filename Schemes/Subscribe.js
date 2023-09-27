@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const Subscribe = new Subscribe(
+const Subscribe = new Schema(
     {
         name: {
             type: String,
@@ -12,13 +12,17 @@ const Subscribe = new Subscribe(
             type: Number,
             required: true
         },
-        mounthCount: {
+        monthsCount: {
             type: Number,
-            default: 0,
+            default: 1,
             required: true
         }
     },
     { timestamps: true, versionKey: false }
 );
+
+Subscribe.statics.findByName = function (name) {
+    return this.findOne({ name: name });
+};
 
 export default mongoose.model('Subscribe', Subscribe);

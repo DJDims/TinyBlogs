@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import jsonwebtoken from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+import SubscribeUser from "./SubscribeUser.js";
+
 const { Schema } = mongoose;
 
 const User = new Schema(
@@ -44,24 +46,6 @@ const User = new Schema(
         acesstoken: {
             type: String,
         },
-        subscribe: {
-            type: Schema.Types.ObjectId,
-            ref: 'Subscribe',
-        },
-        subscribedDate: {
-            type: Date
-        },
-        subscribeDateUpdate: {
-            type: Date,
-        },
-        articlesLeft: {
-            type: Number,
-            default: 5
-        },
-        monthsLeft: {
-            type: Number,
-            default: 0
-        }
     },
     { timestamps: true, versionKey: false }
 );
@@ -118,6 +102,15 @@ User.methods.unfavorite = function (articleId) {
 
 User.methods.isFavorite = function (articleId) {
     if (this.favorites.includes(articleId)) return true;
+}
+
+User.methods.getSubscribeData = function () {
+    return SubscribeUser.findOne({user: this._id});
+}
+
+User.methods.updateLastLogin = function () {
+    this.lastLogin = Date.now();
+    this.save();
 }
 
 export default mongoose.model('User', User);

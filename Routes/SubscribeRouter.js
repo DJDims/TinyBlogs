@@ -1,28 +1,18 @@
 import { Router } from 'express';
+import { verifyToken } from '../Middleware/VerifyToken.js';
+import { subscribeForTarif } from '../controllers/SubscribeController.js';
+import { checkSubscribeExists } from '../Middleware/VerifySubscribe.js';
 
 const subscribeRouter = Router();
-
-//create subscribe
-subscribeRouter.post('/',
-    verifyToken,
-);
 
 //get subscribes
 subscribeRouter.get('/',
     verifyToken,
 );
 
-//get subscribe by id
-subscribeRouter.get('/',
+//subscribe
+subscribeRouter.post('/:name',
     verifyToken,
-);
-
-//update subscribe
-subscribeRouter.put('/',
-    verifyToken,
-);
- 
-//delete subscribe
-subscribeRouter.delete('/',
-    verifyToken,
+    checkSubscribeExists,
+    subscribeForTarif
 );

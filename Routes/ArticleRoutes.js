@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { verifyToken } from '../Middleware/VerifyToken.js';
 import { checkArticleExists } from '../Middleware/VerifyArticle.js';
+import { checkArticlesLeft } from '../Middleware/VerifySubscribe.js';
 import { findAll, findBySlug, findByFollowedUsers, createArticle, updateArticle, deleteArticle, favoriteArticle, unfavoriteArticle } from '../Controllers/ArticleController.js';
 import { createComment, getCommentsBySlug, deleteComment } from '../Controllers/CommentController.js';
 
@@ -17,7 +18,9 @@ articleRouter.get('/feed',
 
 //get article by slug
 articleRouter.get('/:slug',
+    verifyToken,
     checkArticleExists,
+    checkArticlesLeft,
     findBySlug
 );
 
@@ -56,6 +59,7 @@ articleRouter.get('/:slug/comments',
 
 //delete comment
 articleRouter.delete('/:slug/comments/:id',
+    verifyToken,
     checkArticleExists,
     deleteComment
 );
