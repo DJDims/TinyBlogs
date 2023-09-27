@@ -29,14 +29,6 @@ const Article = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
-        },
-        likes: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }],
-        favoriteCount: {
-            type: Number,
-            default: 0
         }
     },
     { timestamps: true, versionKey: false }
@@ -72,9 +64,5 @@ Article.methods.update = function(data) {
         });
     }
 };
-
-Article.methods.addComment = function(comment) {
-    
-}
 
 export default mongoose.model('Article', Article);

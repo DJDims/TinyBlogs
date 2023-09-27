@@ -6,7 +6,7 @@
 +Follow user
 +Unfollow user
 +List Articles
-Feed Articles
++Feed Articles
 +Get Article
 +Create Article
 +Update Article
@@ -14,11 +14,9 @@ Feed Articles
 +Add Comments to an Article
 +Get Comments from an Article
 +Delete Comment
-Favorite Article
-Unfavorite Article
++Favorite Article
++Unfavorite Article
 +Get Tags
 
 https://realworld-docs.netlify.app/docs/specs/backend-specs/endpoints/
 
-Set Like
-Unset like
