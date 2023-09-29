@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { verifyToken } from '../Middleware/VerifyToken.js';
-import { checkUserExistsByUsername } from '../Middleware/VerifyUser.js';
+import { checkUserExistsByUsernameParam } from '../Middleware/VerifyUser.js';
 import { getProfile, followUser, unfollowUser } from '../Controllers/UserController.js';
 
 const profileRouter = Router();
 
 //Get Profile
 profileRouter.get('/:username',
-    checkUserExistsByUsername,
+    checkUserExistsByUsernameParam,
     getProfile
 );
 

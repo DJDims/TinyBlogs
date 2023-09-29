@@ -46,6 +46,9 @@ const User = new Schema(
         acesstoken: {
             type: String,
         },
+        lastLogin: {
+            type: Date
+        }
     },
     { timestamps: true, versionKey: false }
 );

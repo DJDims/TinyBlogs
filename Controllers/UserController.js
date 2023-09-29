@@ -15,7 +15,13 @@ export const register = async (req, res) => {
 			email: email, 
 			password: hashPassword
 		});
+		const subscribe = await Subscribe.findByName('Free');
 		await user.save();
+		const subscribeUser = new SubscribeUser({
+			user: user.id,
+            subscribe: subscribe.id
+		});
+		subscribeUser.save();
 		res.status(200).send('Registration Successful');
 	} catch (error) {
 		res.status(422).json({ error: error });
@@ -31,8 +37,8 @@ export const login = async (req, res) => {
 		const userId = user.id;
 		const username = user.username;
 		const email = user.email;
-
-		const subscribe = await SubscribeUser.findByUserId(userId);t
+		
+		const subscribe = await SubscribeUser.findByUserId(userId);
 		const difference = differenceInMonths(user.lastLogin, new Date());
 		if (subscribe.monthsLeft >= difference) {
 			subscribe.monthsLeft = subscribe.monthsLeft - difference;
@@ -45,10 +51,12 @@ export const login = async (req, res) => {
 			process.env.ACCESS_TOKEN_SECRET, {
 			expiresIn: '15m',
 		});
+		user.lastLogin = new Date();
+		user.save();
 
 		res.send(accessToken);
 	} catch (error) {
-		res.status(404).json({ error: error });
+		res.status(404).send(error.toString());
 	}
 }
 

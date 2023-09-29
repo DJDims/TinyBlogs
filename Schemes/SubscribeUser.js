@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import addMonths from "date-fns";
+import addMonths from "date-fns/addMonths/index.js";
 const { Schema } = mongoose;
 
 const SubscribeUser = new Schema(
@@ -29,12 +29,12 @@ const SubscribeUser = new Schema(
     { timestamps: true, versionKey: false }
 );
 
-SubscribeUser.pre('init', function () {
+SubscribeUser.pre('save', function () {
     this.end = addMonths(this.start, 1);
 })
 
 SubscribeUser.statics.findByUserId = function (userId) {
-    return this.findnOne({ user: userId });
+    return this.findOne({ user: userId });
 }
 
 SubscribeUser.methods.setSubscribe = function (subscribe) {
