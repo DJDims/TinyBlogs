@@ -18,7 +18,7 @@ export const findAll = async (req, res) => {
 export const findByFollowedUsers = async (req, res) => {
     try {
         if (req.user.following.length === 0) return res.status(404).json({error: "You are not following anyone"});
-        const articles = await Article.find({author: {$in: req.user.following}}).sort({createdAt: 'desc'});
+        const articles = await Article.find({author: {$in: req.user.following}}).select('-body -comments -likes -favoriteList -favoriteCount -author -createdAt -updatedAt -slug -_id').sort({createdAt: 'desc'}).sort({createdAt: 'desc'});
         console.log(articles);
         res.json(articles);
     } catch (error) {

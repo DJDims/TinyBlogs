@@ -116,4 +116,12 @@ User.methods.updateLastLogin = function () {
     this.save();
 }
 
+User.methods.displayProfile = function () {
+    return {
+        username: this.username,
+        bio: this.bio,
+        image: this.image,
+    }
+}
+
 export default mongoose.model('User', User);

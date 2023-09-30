@@ -80,8 +80,9 @@ export const updateUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
 	try {
-        const user = req.user;
-        res.status(200).json({ user }); 
+        const user = await User.getUserByUsername(req.params.username);
+		const data = user.displayProfile();
+        res.status(200).json({ profile: data }); 
     } catch (error) {
         res.status(422).json({ error: error });
     }
@@ -90,7 +91,7 @@ export const getProfile = async (req, res) => {
 export const followUser = async (req, res) => {
 	try {
 		const user = await User.getUserByUsername(req.params.username);
-		if (req.user.userId === user._id) return res.status(403).send('You cannot follow yourself');
+		if (req.user._id.toString() === user._id.toString()) return res.status(403).send('You cannot follow yourself');
 
 		if (req.user.isFollowing(user._id)) return res.status(403).send('You already following this user');
 		await req.user.follow(user._id);
@@ -104,7 +105,7 @@ export const followUser = async (req, res) => {
 export const unfollowUser = async (req, res) => {
 	try {
 		const user = await User.getUserByUsername(req.params.username);
-		if (req.user.userId === user._id) return res.status(403).send('You cannot unfollow yourself');
+		if (req.user._id.toString() === user._id.toString()) return res.status(403).send('You cannot unfollow yourself');
 
 		if (!req.user.isFollowing(user._id)) return res.status(403).send('You are not following this user');
 		await req.user.unfollow(user._id);

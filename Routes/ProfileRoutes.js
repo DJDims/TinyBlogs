@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { verifyToken } from '../Middleware/VerifyToken.js';
-import { checkUserExistsByUsernameParam } from '../Middleware/VerifyUser.js';
+import { checkUserExistsByUsername, checkUserExistsByUsernameParam } from '../Middleware/VerifyUser.js';
 import { getProfile, followUser, unfollowUser } from '../Controllers/UserController.js';
 
 const profileRouter = Router();
@@ -14,14 +14,14 @@ profileRouter.get('/:username',
 //Follow user
 profileRouter.post('/:username/follow',
     verifyToken,
-    // checkUserExistsByUsername,
+    checkUserExistsByUsernameParam,
     followUser
 );
 
 //Unfollow user
 profileRouter.delete('/:username/follow',
     verifyToken,
-    // checkUserExistsByUsername,
+    checkUserExistsByUsernameParam,
     unfollowUser
 );    
 
