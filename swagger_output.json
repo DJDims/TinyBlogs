@@ -1,0 +1,578 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+	"/api/tags": {
+		"get": {
+			"description": "Get list of tags",
+			"tags":["Tag"],
+			"responses": {
+				"200": {
+					"description": "List of tags"
+				}
+			}
+		}
+	},
+	"/api/articles": {
+		"get": {
+			"description": "Get list of articles",
+			"tags":["Article"],
+			"responses": {
+				"200": {
+					"description": "List of articles"
+				}
+			}
+		}
+	},
+	"/api/articles/feed": {
+		"get": {
+			"description": "List of articles from subscribed users",
+			"tags":["Article"],
+			"parameters": [
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "List of articles from subscribed users"
+				},
+				"401": {
+					"description": "Unauthorized"
+				}
+			}
+		}
+	},
+	"/api/articles/{slug}": {
+		"get": {
+			"description": "Get one article if you have articles to read",
+			"tags":["Article"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "One article if you have articles to read"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "You have no articles left"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		},
+		"put": {
+			"description": "Update article if you author of this article",
+			"tags":["Article"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				},
+				{
+					"name": "body",
+					"in": "body",
+					"schema": {
+						"type": "object",
+						"properties": {
+							"article": {
+								"title": "Updated article title",
+								"description": "Updated article description",
+								"body": "Updated article body"
+							}
+						}
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Article successfully updated"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Article not Found"
+				}
+			}
+		},
+		"delete": {
+			"description": "Delete article if you author of this article",
+			"tags":["Article"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Article successfuly deleted"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		}
+	},
+	"/api/articles/{slug}/comments": {
+		"post": {
+			"description": "Add comment to an article",
+			"tags":["Comments"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				},
+				{
+					"name": "body",
+					"in": "body",
+					"schema": {
+						"type": "object",
+						"properties": {
+							"comment": {
+								"body": "Very good!"
+							}
+						}
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Comment successfuly added"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		},
+		"get": {
+			"description": "Get list of comment from an article",
+			"tags":["Comments"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "List of comments"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		}
+	},
+	"/api/articles/{slug}/comments/{id}": {
+		"delete": {
+			"description": "Delete comment from an article",
+			"tags":["Comments"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Comment succssfuly deleted"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		}
+	},
+	"/api/articles/{slug}/favorite": {
+		"post": {
+			"description": "Add article to favorites",
+			"tags":["Favorite"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Article added to favorites"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		},
+		"delete": {
+			"description": "Remove article from favorites",
+			"tags":["Favorite"],
+			"parameters": [
+				{
+					"name": "slug",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Article removed from favorites"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		}
+	},
+	"/api/profiles/{username}": {
+		"get": {
+			"description": "Get user profile",
+			"tags":["Profiles"],
+			"parameters": [
+				{
+					"name": "username",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Return user profile"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		}
+	},
+	"/api/profiles/{username}/follow": {
+		"post": {
+			"description": "Follow user",
+			"tags":["Profiles"],
+			"parameters": [
+				{
+					"name": "username",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "User successfully following"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		},
+		"delete": {
+			"description": "Unflollow user",
+			"tags":["Profiles"],
+			"parameters": [
+				{
+					"name": "username",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "x-access-token",
+					"in": "header",
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "User successfully unfollowing"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "Not Found"
+				}
+			}
+		}
+	},
+    "/api/subscribe/{name}": {
+      "post": {
+        "description": "Subscribe for Subscription tariff",
+		"tags":["Subscribe"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+			"200":{
+				"description":"Successfully subscribed"
+			},
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "post": {
+        "description": "Registration",
+		"tags":["User"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "username":"Dmitrii",
+				  "email":"dmitri@test.ee",
+				  "password":"strongpassword"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registration successful"
+          },
+          "403": {
+            "description": "Username or email alredy exists"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "description": "Login by credentials",
+		"tags":["User"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "email":"dmitri@test.ee",
+				  "password":"strongpassword"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return access token"
+          },
+          "403": {
+            "description": "Password is incorrect"
+          },
+          "404": {
+            "description": "Username not Found"
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "get": {
+        "description": "Get current profile",
+		"tags":["User"],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return user profile"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "description": "Update current user data",
+		"tags":["User"],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "username":"Aleksei",
+				  "email":"aleksei@test.ee",
+				  "password":"verystrongpassword",
+				  "bio":"I'm Aleksei Karimov",
+				  "image":"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User data updated"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    }
+  }
+}

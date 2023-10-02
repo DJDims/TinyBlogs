@@ -16,3 +16,5 @@ subscribeRouter.post('/:name',
     checkSubscribeExists,
     subscribeForTarif
 );
+
+export default subscribeRouter;
