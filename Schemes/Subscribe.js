@@ -25,4 +25,8 @@ Subscribe.statics.findByName = function (name) {
     return this.findOne({ name: name });
 };
 
+Subscribe.statics.findAll = function () {
+    return this.find();
+};
+
 export default mongoose.model('Subscribe', Subscribe);

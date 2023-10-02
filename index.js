@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-// import cors from "cors";
+import cors from "cors";
 import { serve, setup } from "swagger-ui-express";
 
 import connectDB from "./dbConnect.js";
@@ -21,7 +21,8 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
-// app.use(cors())
+app.use(express.urlencoded({extended:true}));
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("Welcome to blogs api!<br><br><a href='/api-docs'>Go to docs</a>");

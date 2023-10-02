@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import addMonths from "date-fns/addMonths/index.js";
+import Subscribe from "./Subscribe.js";
 const { Schema } = mongoose;
 
 const SubscribeUser = new Schema(
@@ -36,6 +37,12 @@ SubscribeUser.pre('save', function () {
 SubscribeUser.statics.findByUserId = function (userId) {
     return this.findOne({ user: userId });
 }
+
+SubscribeUser.statics.getSubscribeByUserId = async function (userId) {
+    const subscribeuser = await this.findOne({ user: userId });
+    const subs = await Subscribe.findOne({_id: subscribeuser.subscribe});
+    return subs;
+};
 
 SubscribeUser.methods.setSubscribe = function (subscribe) {
     this.subscribe = subscribe._id;

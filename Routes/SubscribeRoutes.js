@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { verifyToken } from '../Middleware/VerifyToken.js';
-import { subscribeForTarif } from '../controllers/SubscribeController.js';
+import { getSubscribes, subscribeForTarif } from '../controllers/SubscribeController.js';
 import { checkSubscribeExists } from '../Middleware/VerifySubscribe.js';
 
 const subscribeRouter = Router();
@@ -8,6 +8,7 @@ const subscribeRouter = Router();
 //get subscribes
 subscribeRouter.get('/',
     verifyToken,
+    getSubscribes
 );
 
 //subscribe

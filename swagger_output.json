@@ -5,7 +5,7 @@
     "title": "REST API",
     "description": ""
   },
-  "host": "localhost:3000",
+  "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
     "http"
@@ -413,6 +413,17 @@
 				},
 				"404": {
 					"description": "Not Found"
+				}
+			}
+		}
+	},
+	"/api/subscribe":{
+		"get":{
+			"description":"Get list of subscribe tariffs",
+			"tags":["Subscribe"],
+			"responses":{
+				"200":{
+					"description":"Return list of subscribe tariffs"
 				}
 			}
 		}

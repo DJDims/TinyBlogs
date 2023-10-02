@@ -4,14 +4,18 @@ import SubscribeUser from '../Schemes/SubscribeUser.js';
 
 export const subscribeForTarif = async (req, res) => {
     try {
-        const subscribeuser = new SubscribeUser({
-            user: req.user._id,
-            subscribe: req.subscribe._id,
-            articlesLeft: req.subscribe.articlesCount,
-            monthsLeft: req.subscribe.monthsCount
-        });
+        const subscribeuser = await SubscribeUser.findByUserId(req.user._id);
+        await subscribeuser.setSubscribe(req.subscribe);
+        res.send("Succesfully subscribed");
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-        subscribeuser.save();
+export const getSubscribes = async (req, res) => {
+    try {
+        const subscribes = await Subscribe.findAll()
+        res.json(subscribes);
     } catch (error) {
         console.log(error);
     }
