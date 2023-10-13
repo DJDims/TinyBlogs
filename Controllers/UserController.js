@@ -52,8 +52,14 @@ export const login = async (req, res) => {
 	});
 	user.lastLogin = new Date();
 	user.save();
-
-	res.send(accessToken);
+	const userToResponse = {
+		"email": user.email,
+		"token": accessToken,
+		"username": user.username,
+		"bio": user.bio,
+		"image": user.image
+	}
+	res.send(userToResponse);
 }
 
 export const getCurrentUser = async (req, res) => {

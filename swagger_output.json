@@ -13,6 +13,7 @@
 	"paths": {
 		"/api/users/": {
 			"post": {
+				"summary": "Registration",
 				"description": "Registration",
 				"tags": [
 					"User"
@@ -61,6 +62,7 @@
 		},
 		"/api/users/login": {
 			"post": {
+				"summary":"Login",
 				"description": "Login by credentials",
 				"tags": [
 					"User"
@@ -105,7 +107,8 @@
 		},
 		"/api/user": {
 			"get": {
-				"description": "Get current profile",
+				"description": "Get current user profile",
+				"summary":"Get current user profile",
 				"tags": [
 					"User"
 				],
@@ -127,6 +130,7 @@
 			},
 			"put": {
 				"description": "Update current user data",
+				"summary":"Update user",
 				"tags": [
 					"User"
 				],
@@ -190,6 +194,7 @@
 		},
 		"/api/tags": {
 			"get": {
+				"summary":"Get a list of tags",
 				"description": "Get list of tags",
 				"tags": [
 					"Tag"
@@ -203,6 +208,7 @@
 		},
 		"/api/articles": {
 			"post": {
+				"summary":"Create article",
 				"description": "Create article",
 				"tags": [
 					"Article"
@@ -258,6 +264,7 @@
 			},
 			"get": {
 				"description": "Get list of articles",
+				"summary":"Get list of articles",
 				"tags": [
 					"Article"
 				],
@@ -270,7 +277,8 @@
 		},
 		"/api/articles/feed": {
 			"get": {
-				"description": "List of articles from subscribed users",
+				"description": "List of articles from followed users",
+				"summary":"List of articles from followed users",
 				"tags": [
 					"Article"
 				],
@@ -296,6 +304,7 @@
 		},
 		"/api/articles/{slug}": {
 			"get": {
+				"summary":"Get article",
 				"description": "Get one article if you have articles to read",
 				"tags": [
 					"Article"
@@ -330,6 +339,7 @@
 			},
 			"put": {
 				"description": "Update article if you author of this article",
+				"summary":"Update article",
 				"tags": [
 					"Article"
 				],
@@ -396,6 +406,7 @@
 			},
 			"delete": {
 				"description": "Delete article if you author of this article",
+				"summary":"Delete article",
 				"tags": [
 					"Article"
 				],
@@ -431,6 +442,7 @@
 		"/api/articles/{slug}/comments": {
 			"post": {
 				"description": "Add comment to an article",
+				"summary":"Create comment",
 				"tags": [
 					"Comments"
 				],
@@ -482,6 +494,7 @@
 			},
 			"get": {
 				"description": "Get list of comment from an article",
+				"summary":"Get comments",
 				"tags": [
 					"Comments"
 				],
@@ -506,6 +519,7 @@
 		"/api/articles/{slug}/comments/{id}": {
 			"delete": {
 				"description": "Delete comment from an article",
+				"summary":"Delete comment",
 				"tags": [
 					"Comments"
 				],
@@ -547,6 +561,7 @@
 		"/api/articles/{slug}/favorite": {
 			"post": {
 				"description": "Add article to favorites",
+				"summary":"Add article to favorites",
 				"tags": [
 					"Favorite"
 				],
@@ -580,6 +595,7 @@
 			},
 			"delete": {
 				"description": "Remove article from favorites",
+				"summary":"Remove article from favorites",
 				"tags": [
 					"Favorite"
 				],
@@ -615,6 +631,7 @@
 		"/api/profiles/{username}": {
 			"get": {
 				"description": "Get user profile",
+				"summary":"Get user profile",
 				"tags": [
 					"Profiles"
 				],
@@ -639,6 +656,7 @@
 		"/api/profiles/{username}/follow": {
 			"post": {
 				"description": "Follow user",
+				"summary":"Follow user",
 				"tags": [
 					"Profiles"
 				],
@@ -672,6 +690,7 @@
 			},
 			"delete": {
 				"description": "Unflollow user",
+				"summary":"Unfollow user",
 				"tags": [
 					"Profiles"
 				],
@@ -707,6 +726,7 @@
 		"/api/subscribe": {
 			"get": {
 				"description": "Get list of subscribe tariffs",
+				"summary":"Get list of subscribes",
 				"tags": [
 					"Subscribe"
 				],
@@ -727,6 +747,7 @@
 		"/api/subscribe/{name}": {
 			"post": {
 				"description": "Subscribe for Subscription tariff",
+				"summary":"Subscribe for tarrif",
 				"tags": [
 					"Subscribe"
 				],

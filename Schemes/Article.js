@@ -35,7 +35,7 @@ const Article = new Schema(
 );
 
 Article.statics.getAll = function() {
-    return this.find().select('-body -comments -likes -favoriteList -favoriteCount -author -createdAt -updatedAt -slug -_id').sort({createdAt: 'desc'});
+    return this.find().select('-body -comments -favoriteList -favoriteCount -author -_id').sort({createdAt: 'desc'});
 }
 
 Article.statics.findByTitle = function(title) {
