@@ -209,6 +209,11 @@
 				],
 				"parameters": [
 					{
+						"name": "x-access-token",
+						"in": "header",
+						"type": "string"
+					},
+					{
 						"name": "body",
 						"in": "body",
 						"schema": {
@@ -704,6 +709,13 @@
 				"description": "Get list of subscribe tariffs",
 				"tags": [
 					"Subscribe"
+				],
+				"parameters":[
+					{
+						"name": "x-access-token",
+						"in": "header",
+						"type": "string"
+					}
 				],
 				"responses": {
 					"200": {
