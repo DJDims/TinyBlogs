@@ -64,7 +64,7 @@ export const updateArticle = async (req, res) => {
         
         req.article.update(req.body.article);
         await req.article.save();
-        res.status(200).send("Article successfully updated");
+        res.status(200).json(req.body.article);
     } catch (error) {
         res.json({error: error});
     }
@@ -90,7 +90,7 @@ export const favoriteArticle = async (req, res) => {
         console.log(user)
         if (user.isFavorite(article._id)) return res.status(403).send("You already have this article in favorites");
         await user.favorite(article._id);
-        res.status(200).send("Article successfully added to favorites");
+        res.status(200).json(article);
     } catch (error) {
         res.json({error: error});
     }
@@ -102,7 +102,7 @@ export const unfavoriteArticle = async (req, res) => {
         const user = await User.getUserByToken(req.headers['x-access-token']);
         if (!user.isFavorite(article._id)) return res.status(403).send("You dont have this article in favorites");
         await user.unfavorite(article._id);
-        res.status(200).send("Article successfully removed from favorites");
+        res.status(200).json(article);
     } catch (error) {
         res.json({error: error});
     }

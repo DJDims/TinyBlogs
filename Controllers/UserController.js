@@ -74,7 +74,7 @@ export const getCurrentUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	try {
 		await req.user.update(req.body.user);
-        res.status(200).send("User successfully updated"); 
+        res.status(200).json(req.user); 
     } catch (error) {
         res.status(422).send(error);
     }
